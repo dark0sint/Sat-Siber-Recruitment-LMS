@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: sat_siber_lms
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+  python-service:
+    build: ./python-scripts
+    environment:
+      - PYTHONPATH=/app
